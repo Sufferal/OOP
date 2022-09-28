@@ -1,3 +1,8 @@
-*/*.o
-main
-hello
+**/*.o
+
+# Lab 1
+lab_1/main
+
+# Lab 0
+lab_0/hello
+
