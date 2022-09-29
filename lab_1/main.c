@@ -36,10 +36,23 @@ int peek(Queue* q) {
   return q->head->value;
 }
 
-int get_n_elements(Queue* q) {
+int get_n_elements(Queue* q, int qt) {
   Node* tmp = q->head;
 
   int res = 0;
+
+  if (qt == 3) {
+    res = 1;
+    tmp = q->head->next;
+
+    while(tmp != q->head) {
+      res++;
+      tmp = tmp->next;
+    }
+
+    return res;
+  }
+
   while(tmp != NULL) {
     res++;
     tmp = tmp->next;
@@ -451,26 +464,29 @@ int main() {
     printf("| 3 - circular    |\n");
 
     scanf("%d", &queue_type);
-    switch (queue_type) {
-      case 1:
-        printf("Normal queue:      \n");
-        break;
-      case 2: 
-        printf("Priority queue:    \n");
-        break;
-      case 3: 
-        printf("Circular queue:    \n");
-        break;
-    default:
-      printf("\n>Invalid queue type \n");
-      break;
-    }
+    // switch (queue_type) {
+    //   case 1:
+    //     printf("Normal queue:      \n");
+    //     break;
+    //   case 2: 
+    //     printf("Priority queue:    \n");
+    //     break;
+    //   case 3: 
+    //     printf("Circular queue:    \n");
+    //     break;
+    // default:
+    //   printf("\n>Invalid queue type \n");
+    //   break;
+    // }
   } else {
     printf("\n>Invalid character\n");
   }
 
   FILE* f;
-  f = fopen("output.txt", "w+");
+  f = fopen("output.txt", "r");
+  if(queue_type_from_file == 'n') {
+    f = fopen("output.txt", "w");
+  }
 
   if(f == NULL) {
     printf("\n>Error: Failed to open the file\n");
@@ -504,6 +520,20 @@ int main() {
   }
 
   while (k != 9) {
+    switch (queue_type) {
+      case 1:
+        printf("\nNormal queue");
+        break;
+      case 2: 
+        printf("\nPriority queue");
+        break;
+      case 3: 
+        printf("\nCircular queue");
+        break;
+    default:
+      printf("\n>Invalid queue type \n");
+      break;
+    }
     printf("\n======== MENU ======== \n");
     printf("| 1 - enqueue        |\n");
     printf("| 2 - dequeue        |\n");
@@ -511,6 +541,7 @@ int main() {
     printf("| 4 - search         |\n");
     printf("| 5 - sort           |\n");
     printf("| 6 - reverse        |\n");
+    printf("| 7 - change queue   |\n");
     printf("| 9 - save & exit    |\n");
     printf("======== MENU ======== \n");
     
@@ -538,14 +569,12 @@ int main() {
           // Circular queue
           if(queue_type == 3) {
             c_enqueue(q, m);
-            queue_export(q, queue_type, f);
             if(queue_type_from_file == 'y') { queue_export(q, queue_type, h); }
             if(queue_type_from_file == 'n') { queue_export(q, queue_type, f); }
             continue;
           }
 
           enqueue(q, m);
-          queue_export(q, queue_type, f);
           if(queue_type_from_file == 'y') { queue_export(q, queue_type, h); }
           if(queue_type_from_file == 'n') { queue_export(q, queue_type, f); }
         }
@@ -562,14 +591,12 @@ int main() {
           dequeue(q);
         }
 
-        queue_export(q, queue_type, f);
         if(queue_type_from_file == 'y') { queue_export(q, queue_type, h); }
         if(queue_type_from_file == 'n') { queue_export(q, queue_type, f); }
         break;
       case 3:
         printf("\n");
         display_queue(q, queue_type);
-        queue_export(q, queue_type, f);
         if(queue_type_from_file == 'y') { queue_export(q, queue_type, h); }
         if(queue_type_from_file == 'n') { queue_export(q, queue_type, f); }
         printf("\n");
@@ -580,8 +607,8 @@ int main() {
         search(q, s);
         break;
       case 5:
-        sort(q, get_n_elements(q));
-        queue_export(q, queue_type, f);
+        // get_n_elements(q, queue_type);
+        sort(q, get_n_elements(q, queue_type));
         if(queue_type_from_file == 'y') { queue_export(q, queue_type, h); }
         if(queue_type_from_file == 'n') { queue_export(q, queue_type, f); }
         printf("\n>Queue was sorted \n");
@@ -589,17 +616,22 @@ int main() {
       case 6:
         if(queue_type == 3) {
           c_reverse(q);
-          queue_export(q, queue_type, f);
           if(queue_type_from_file == 'y') { queue_export(q, queue_type, h); }
           if(queue_type_from_file == 'n') { queue_export(q, queue_type, f); }
           printf("\n>Queue was reversed \n");
           break;
         }
         reverse(q);
-        queue_export(q, queue_type, f);
         if(queue_type_from_file == 'y') { queue_export(q, queue_type, h); }
         if(queue_type_from_file == 'n') { queue_export(q, queue_type, f); }
         printf("\n>Queue was reversed \n");
+        break;
+      case 7: 
+        printf("\n>Type of queue? \n");
+        printf("| 1 - normal      |\n");
+        printf("| 2 - priority    |\n");
+        printf("| 3 - circular    |\n");
+        scanf("%d", &queue_type);
         break;
       case 9:
         printf(">Exit complete \n");
@@ -610,9 +642,10 @@ int main() {
     }
   }
 
-  fclose(f);
   if(queue_type_from_file == 'y') {   
     fclose(h);
+  } else if(queue_type_from_file == 'n') {
+    fclose(f);
   }
 
 	return 0;
