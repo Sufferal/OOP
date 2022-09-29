@@ -62,3 +62,9 @@ This will show individual statistics, leaderboards and different type of users
 ### 1.10 TimeControl
 
 Each chess game is played under a time control, be it a traditional or custome one.
+
+## 2. Results
+
+![result_1](./screenshots/result_1.png)
+![result_2](./screenshots/result_2.png)
+![result_3](./screenshots/result_3.png)
