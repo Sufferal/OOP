@@ -1,17 +1,13 @@
-class Square(val file: String, val rank: String) {
+class Square(var file: String, var rank: String) {
     var location: String? = "$file$rank"
-    var color: String? = null
+    var squareColor: String? = null
     var isOccupied: Boolean = false
 
-    fun printLocation() {
-        println(location)
+    fun changeIsOccupied() {
+        isOccupied = !isOccupied
     }
 
-    fun printColor() {
-        println(color)
-    }
-
-    fun printInfo() {
-        println("Square $location is $color")
+    fun printSquareInfo() {
+        println("Square $location is $squareColor")
     }
 }
