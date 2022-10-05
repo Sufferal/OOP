@@ -1,12 +1,12 @@
 package PlayerPackage
 
-class Player(
+open class Player(
     var name: String,
     var playerColor: String,
     private var winCount: Int = 0,
     private var drawCount: Int = 0,
     private var lossCount: Int = 0
-    ) {
+): Account() {
 
     protected fun changePlayerColor(): String {
         playerColor = if (playerColor == "white") {

@@ -1,10 +1,10 @@
 package PlayerPackage
 
-class Account(
+open class Account(
     protected var username: String = "Magnus",
     protected var elo: Int = 3000
 ) {
-    fun updateAccount(usernameUPD: String, eloUPD: Int) {
+    protected fun updateAccount(usernameUPD: String, eloUPD: Int) {
         username = usernameUPD
         elo = eloUPD
     }

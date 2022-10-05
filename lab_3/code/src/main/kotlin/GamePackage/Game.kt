@@ -3,16 +3,17 @@ package GamePackage
 import BoardPackage.Board
 import BoardPackage.Move
 import PiecePackage.King
+import PlayerPackage.Account
 import PlayerPackage.Player
 import PlayerPackage.TimeControl
 
-class Game(
+open class Game(
     var board: Board,
     var playerOne: Player,
     var playerTwo: Player,
     var timePlayerOne: TimeControl,
     var timePlayerTwo: TimeControl
-) {
+) : Account(){
     private var moves: MutableList<String> = arrayListOf<String>()
     private var currentPlayer = playerOne
 

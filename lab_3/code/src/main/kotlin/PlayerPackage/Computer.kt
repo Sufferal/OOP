@@ -4,7 +4,8 @@ class Computer(
     private var computerColor: String,
     private var winCount: Int,
     private var drawCount: Int,
-    private var lossCount: Int) {
+    private var lossCount: Int, name: String, playerColor: String
+) : Player(name, playerColor) {
     fun suggestMove() {
         println("You should play this move")
     }

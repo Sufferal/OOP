@@ -2,7 +2,7 @@ package PlayerPackage
 
 import PlayerPackage.Player
 
-class TimeControl(val player: Player, var time: String) {
+class TimeControl(val player: Player, var time: String): Account() {
     fun tickTime() {
         println("Time is ticking right now")
     }

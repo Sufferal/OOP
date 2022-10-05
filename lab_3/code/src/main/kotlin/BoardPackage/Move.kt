@@ -1,6 +1,7 @@
 package BoardPackage
 
 import PiecePackage.Piece
+import PlayerPackage.Account
 import PlayerPackage.Player
 
 class Move(
@@ -8,7 +9,7 @@ class Move(
     var piece: Piece,
     var currentSquare: Square,
     var finalSquare: Square
-) {
+):Account() {
 //    fun printMove() {
 //        piece.square = finalSquare
 //        println("${piece.pieceColor} ${piece.name} moved from ${currentSquare.location} to ${finalSquare.location}")

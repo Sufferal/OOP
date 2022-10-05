@@ -1,10 +1,16 @@
 package GamePackage
 
+import BoardPackage.Board
 import GamePackage.Game
+import PlayerPackage.Account
+import PlayerPackage.Player
+import PlayerPackage.TimeControl
 
-class GameDisplay(var game: Game) {
+class GameDisplay(board: Board, playerOne: Player, playerTwo: Player, timePlayerOne: TimeControl,
+                  timePlayerTwo: TimeControl
+): Game(board, playerOne, playerTwo, timePlayerOne, timePlayerTwo) {
     fun displayGame() {
-        println("${game.playerOne.name} vs ${game.playerTwo.name}")
+        println("${playerOne.name} vs ${playerTwo.name}")
         println("BR BN BB BQ BK BB BN BR")
         println("BP BP BP BP BP BP BP BP")
 
