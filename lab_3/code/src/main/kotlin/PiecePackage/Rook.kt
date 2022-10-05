@@ -1,0 +1,4 @@
+package PiecePackage
+
+class Rook {
+}
