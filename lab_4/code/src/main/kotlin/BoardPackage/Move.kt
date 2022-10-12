@@ -1,12 +1,12 @@
 package BoardPackage
 
-import PiecePackage.Piece
+import PiecePackage.OldPiece
 import PlayerPackage.Account
 import PlayerPackage.Player
 
 class Move(
     val player: Player,
-    var piece: Piece,
+    var oldPiece: OldPiece,
     var currentSquare: Square,
     var finalSquare: Square
 ):Account() {
@@ -16,7 +16,7 @@ class Move(
 //    }
 
     fun capturePiece(finalSquare: Square) {
-        println("$piece.pieceColor $piece captured the piece on $finalSquare")
+        println("$oldPiece.pieceColor $oldPiece captured the piece on $finalSquare")
     }
 
     fun check() {

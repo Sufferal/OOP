@@ -1,47 +1,25 @@
 package GamePackage
 
 import BoardPackage.Board
-import BoardPackage.Move
-import PiecePackage.King
-import PlayerPackage.Account
-import PlayerPackage.Player
-import PlayerPackage.TimeControl
+import PiecePackage.Pawn
+import PiecePackage.Piece
+import PiecePackage.PieceColor
+import PiecePackage.Queen
 
-open class Game(
-    var board: Board,
-    var playerOne: Player,
-    var playerTwo: Player,
-    var timePlayerOne: TimeControl,
-    var timePlayerTwo: TimeControl
-) : Account(){
-    private var moves: MutableList<String> = arrayListOf<String>()
-    private var currentPlayer = playerOne
-
+class Game {
     fun runGame() {
-        var move: String? = "start"
-        while (move != "stop") {
-            println("Enter the move ${currentPlayer.name}: ")
-            move = readln()
-            if (move != "stop") {
-                moves.add(move)
-                currentPlayer = if (currentPlayer == playerOne) {
-                    playerTwo
-                } else {
-                    playerOne
-                }
-            }
-        }
+        val board = Board()
+        board.createBoard()
+        board.printBoard()
+
+        val color = PieceColor.white
+        val p1: Pawn = Pawn(color)
+        val p2: Piece = Queen(color)
+        this.printPiece(p1)
+        this.printPiece(p2)
     }
 
-    fun showGameHistory() {
-        println("Game moves: ")
-        for (move in moves) {
-            println(move)
-        }
-    }
-
-    fun getFinalResults() {
-        println("${playerTwo.name} won with ${playerTwo.playerColor}")
-        println("${playerOne.name} lost with ${playerOne.playerColor}")
+    fun printPiece(piece: Piece) {
+        piece.printPieceInfo()
     }
 }

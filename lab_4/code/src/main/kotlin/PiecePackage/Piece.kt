@@ -1,39 +1,35 @@
 package PiecePackage
 
+import BoardPackage.File
+import BoardPackage.Position
 import BoardPackage.Square
-import PlayerPackage.Account
+import BoardPackage.SquareColor
 
-open class Piece(
-    protected val name: String,
-    protected val pieceColor: String,
-    var square: Square
-) : Account() {
-    protected var availableMoves: MutableList<String> = arrayListOf<String>()
+abstract class Piece(protected val pieceColor: PieceColor) {
+    protected var currentSquare: Square = Square(SquareColor.black, Position(File.a, 1))
+    protected lateinit var pieceName: String
+
+    @JvmName("getPieceName1")
+    fun getPieceName(): String {
+        return pieceName
+    }
+
+     @JvmName("getPieceColor1")
+     fun getPieceColor(): PieceColor {
+        return pieceColor
+    }
+
+    @JvmName("getCurrentSquare1")
+    fun getCurrentSquare(): Square {
+        return currentSquare
+    }
+
+    @JvmName("setCurrentSquare1")
+    fun setCurrentSquare(tmpSquare: Square) {
+        currentSquare = tmpSquare
+    }
+
     fun printPieceInfo() {
-        println("$pieceColor $name on ${square.location} square")
-    }
-
-    open fun show() {
-        println("I'm a generic piece")
-    }
-
-    protected open fun moveSquareUp() {
-        println("Square up")
-    }
-
-    protected open fun moveSquareDown() {
-        println("Square down")
-    }
-
-    protected open fun moveSquareRight() {
-        println("Square right")
-    }
-
-    protected open fun moveSquareLeft() {
-        println("Square left")
-    }
-
-    protected open fun pieceMovement(): Unit? {
-        return null
+        println("Piece(pieceName: $pieceName, pieceColor: $pieceColor, currentSquare: ${currentSquare.getPosition().getFile()}${currentSquare.getPosition().getRank()})")
     }
 }
