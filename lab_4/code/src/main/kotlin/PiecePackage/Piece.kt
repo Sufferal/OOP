@@ -26,7 +26,7 @@ abstract class Piece(protected val pieceColor: PieceColor) {
 
     @JvmName("setCurrentSquare1")
     fun setCurrentSquare(tmpSquare: Square) {
-        currentSquare = tmpSquare
+        this.currentSquare = tmpSquare
     }
 
     fun printPieceInfo() {

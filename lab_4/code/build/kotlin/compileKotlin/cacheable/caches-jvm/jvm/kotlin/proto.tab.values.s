@@ -1,1 +1,1 @@
-ÊJ KÀM SÏOÁM·M–N–N–NÂN N
+ÊJ KÀM SÏOÁM·M–N–N–NÂN N˙OﬁRÓQ‰PÍP«S≈V
