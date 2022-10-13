@@ -1,6 +1,6 @@
 # Lab 4: Into OOP and Polymorphism
 
-![diagram](./screenshots/diagram.png)
+![diagram](./screenshots/diagramUPD.png)
 
 ## 1. Diagram analysis
 

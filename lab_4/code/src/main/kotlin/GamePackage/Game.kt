@@ -1,25 +1,21 @@
 package GamePackage
 
 import BoardPackage.Board
+import BoardPackage.Move
 import PiecePackage.Pawn
 import PiecePackage.Piece
 import PiecePackage.PieceColor
 import PiecePackage.Queen
 
 class Game {
+    val board = Board()
     fun runGame() {
-        val board = Board()
         board.createBoard()
-        board.printBoard()
-
-        val color = PieceColor.white
-        val p1: Pawn = Pawn(color)
-        val p2: Piece = Queen(color)
-        this.printPiece(p1)
-        this.printPiece(p2)
+//        board.printBoardCustom()
+//        board.printBoard()
     }
 
-    fun printPiece(piece: Piece) {
-        piece.printPieceInfo()
+    fun printPiece(piece: Move) {
+        piece.getLegalMoves(board)
     }
 }

@@ -1,9 +1,11 @@
 package BoardPackage
 
+import PiecePackage.Piece
 import PlayerPackage.Account
 
 class Square(private val squareColor: SquareColor, private val position: Position) {
     private var isSquareOccupied: Boolean = false
+    private lateinit var currentSquarePiece: Piece
 
     fun getSquareColor(): SquareColor {
         return squareColor
@@ -13,8 +15,27 @@ class Square(private val squareColor: SquareColor, private val position: Positio
         return position
     }
 
+    fun getCurrentSquarePiece(): Piece {
+        return currentSquarePiece
+    }
+
+    fun setCurrentSquarePiece(tmpPiece: Piece)  {
+        this.currentSquarePiece = tmpPiece
+    }
+
+    fun isSquareOccupied(): Boolean {
+        return isSquareOccupied
+    }
+
+    fun setSquareOccupied(tmpOccupied: Boolean) {
+        this.isSquareOccupied = tmpOccupied
+    }
+
+
+
     fun emptySquare() {
-        isSquareOccupied = false
+        this.isSquareOccupied = false
+//        this.currentSquarePiece = null
     }
 
     fun printSquareInfo() {

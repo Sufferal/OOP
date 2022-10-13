@@ -4,7 +4,7 @@ import PiecePackage.OldPiece
 import PlayerPackage.Account
 import PlayerPackage.Player
 
-class Move(
+class MoveOld(
     val player: Player,
     var oldPiece: OldPiece,
     var currentSquare: Square,
