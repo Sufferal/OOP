@@ -4,10 +4,27 @@
 
 ## 1. Diagram analysis
 
-**Account** is the root/God class. Each sub-class is going to include the username and ELO fields of the super-class. Since a profile is the top level of a chess application/simulation, naturely it will be included in **all** subclasses.
+**Game** class doesn't inherit **Board** or **Square**, but merely uses it inside the file.
 
-**GameDisplay** inherits **Game** which in turn means direct access provided to an instance of **Game**. Displaying each player's move and providing a visual of what's happening on the board it is a crucial entity of the simulation.
+**Computer** can be a player and can also have its own designated **Account**. Player might or might not posses an **Account**.
 
-**Piece** is a key super-class. It has the most sub-classes such as: King, Queen, Rook, Bishop, Knight and Pawn. As an application of inheritance, each piece has overided the piece movement method.
+**PositionCreation** is the type of class to update/create a new position easier.
 
-Last but not least, a sub-class of **Player** is **Computer**. Not playing against another human, but a computer is an essential feature of the game.
+**TimeControl** represents how much time each player has and depending on that we have 3 outcomes:
+
+1. **Win**
+2. **Loss**
+3. **Draw**
+
+Besides this these outcomes can be achieved through **Move** interface, that is a player got either checkmated, stalemated, resigned or other result has occured.
+
+Arguably the most important entity, the abstract class **Piece**. Since there is no need to instantiate it, it's the perfect to make it abstract. Obviously, all chess pieces inherit this class:
+
+- **King**
+- **Queen**
+- **Rook**
+- **Bishop**
+- **Knight**
+- **Pawn**
+
+On top of that these classes make use of the **Move** interface to make their usual moves.
