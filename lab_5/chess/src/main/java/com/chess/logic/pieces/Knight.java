@@ -17,7 +17,7 @@ public class Knight extends Piece{
 
     private final static int[] CANDIDATE_MOVES = { -17, -15, -10, -6, 6, 10, 15, 17 };
 
-    public Knight(int pieceCoordinate, final GeneralColor pieceColor) {
+    public Knight(final int pieceCoordinate, final GeneralColor pieceColor) {
         super(pieceCoordinate, pieceColor);
     }
 
@@ -70,5 +70,10 @@ public class Knight extends Piece{
 
     private static boolean isEighthFileRemoval(final int currentPos, final int posOffset) {
         return BoardExtra.EIGHTH_FILE[currentPos] && (posOffset == -15) || (posOffset == -6) || (posOffset == 10) || (posOffset == 17);
+    }
+
+    @Override
+    public String toString() {
+        return PieceType.Knight.toString();
     }
 }

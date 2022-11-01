@@ -16,7 +16,7 @@ import java.util.List;
 public class Queen extends Piece {
     private final static int[] CANDIDATE_MOVES = { -9, -8, -7, -1, 1, 7, 8, 9 };
 
-    public Queen(int pieceCoordinate, GeneralColor pieceColor) {
+    public Queen(final int pieceCoordinate, final GeneralColor pieceColor) {
         super(pieceCoordinate, pieceColor);
     }
 
@@ -61,5 +61,10 @@ public class Queen extends Piece {
 
     private static boolean isEighthFileRemoval(final int currentPos, final int posOffset) {
         return BoardExtra.EIGHTH_FILE[currentPos] && (posOffset == -7) || (posOffset == 1) || (posOffset == 9);
+    }
+
+    @Override
+    public String toString() {
+        return PieceType.Queen.toString();
     }
 }

@@ -54,6 +54,10 @@ public class Rook extends Piece{
 
         return ImmutableList.copyOf(legalMoves);
     }
+    @Override
+    public String toString() {
+        return PieceType.Rook.toString();
+    }
 
     private static boolean isFirstFileRemoval(final int currentPos, final int posOffset) {
         return BoardExtra.FIRST_FILE[currentPos] && (posOffset == -1);
@@ -62,4 +66,6 @@ public class Rook extends Piece{
     private static boolean isEighthFileRemoval(final int currentPos, final int posOffset) {
         return BoardExtra.EIGHTH_FILE[currentPos] && (posOffset == 1);
     }
+
+
 }

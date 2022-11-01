@@ -38,12 +38,17 @@ public abstract class Square {
             super(coordinate);
         }
 
-        @java.lang.Override
+        @Override
+        public String toString() {
+            return ".";
+        }
+
+        @Override
         public boolean isSquareOccupied() {
             return false;
         }
 
-        @java.lang.Override
+        @Override
         public Piece getPiece() {
             return null;
         }
@@ -58,12 +63,20 @@ public abstract class Square {
             this.pieceSquare = pieceSquare;
         }
 
-        @java.lang.Override
+        @Override
+        public String toString() {
+            return getPiece().getPieceColor().isWhite() ?
+                    getPiece().toString().toUpperCase() :
+                    getPiece().toString().toLowerCase();
+        }
+
+
+        @Override
         public boolean isSquareOccupied() {
             return true;
         }
 
-        @java.lang.Override
+        @Override
         public Piece getPiece() {
             return this.pieceSquare;
         }

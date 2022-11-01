@@ -17,7 +17,7 @@ public class Bishop extends Piece{
 
     private final static int[] CANDIDATE_MOVES = { -9, -7, 7, 9 };
 
-    public Bishop(int pieceCoordinate, GeneralColor pieceColor) {
+    public Bishop(final int pieceCoordinate, final GeneralColor pieceColor) {
         super(pieceCoordinate, pieceColor);
     }
 
@@ -62,5 +62,10 @@ public class Bishop extends Piece{
 
     private static boolean isEighthFileRemoval(final int currentPos, final int posOffset) {
         return BoardExtra.EIGHTH_FILE[currentPos] && (posOffset == -7) || (posOffset == 9);
+    }
+
+    @Override
+    public String toString() {
+        return PieceType.Bishop.toString();
     }
 }

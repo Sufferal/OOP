@@ -22,9 +22,33 @@ public abstract class Piece {
         return this.pieceColor;
     }
 
-    public abstract Collection<Move> searchLegalMoves(final Board board);
-
     protected boolean isFirstMove() {
         return this.isFirstMove;
+    }
+
+    public abstract Collection<Move> searchLegalMoves(final Board board);
+
+    public int getPieceCoordinate() {
+        return this.pieceCoordinate;
+    }
+
+    public enum PieceType {
+        Pawn("P"),
+        Knight("N"),
+        Bishop("B"),
+        Rook("R"),
+        Queen("Q"),
+        King("K");
+
+        private final String pieceName;
+
+        PieceType(final String pieceName) {
+            this.pieceName = pieceName;
+        }
+
+        @Override
+        public String toString() {
+            return this.pieceName;
+        }
     }
 }

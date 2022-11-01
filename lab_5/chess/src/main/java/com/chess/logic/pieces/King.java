@@ -15,7 +15,7 @@ public class King extends Piece{
 
     private final static int[] CANDIDATE_MOVES = { -9, -8, -7, -1, 1, 7, 8, 9 };
 
-    public King(int pieceCoordinate, GeneralColor pieceColor) {
+    public King(final int pieceCoordinate, final GeneralColor pieceColor) {
         super(pieceCoordinate, pieceColor);
     }
 
@@ -58,4 +58,8 @@ public class King extends Piece{
         return BoardExtra.EIGHTH_FILE[currentPos] && (posOffset == -7) || (posOffset == 1) || (posOffset == 9);
     }
 
+    @Override
+    public String toString() {
+        return PieceType.King.toString();
+    }
 }
