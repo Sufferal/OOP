@@ -16,8 +16,8 @@ import java.util.List;
 public class Rook extends Piece{
     private final static int[] CANDIDATE_MOVES = { -8, -1, 1, 8 };
 
-    public Rook(int pieceCoordinate, GeneralColor pieceColor) {
-        super(pieceCoordinate, pieceColor);
+    public Rook(final int pieceCoordinate, final GeneralColor pieceColor) {
+        super(PieceType.Rook, pieceCoordinate, pieceColor);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class Rook extends Piece{
                 }
 
                 endCoordinate += candidateOffset;
-                if(BoardExtra.isValidSquareCoordinate(candidateOffset)) {
+                if(BoardExtra.isValidSquareCoordinate(endCoordinate)) {
                     final Square endSquare = board.getSquare(endCoordinate);
 
                     if(!endSquare.isSquareOccupied()) {

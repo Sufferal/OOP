@@ -18,7 +18,7 @@ public class Bishop extends Piece{
     private final static int[] CANDIDATE_MOVES = { -9, -7, 7, 9 };
 
     public Bishop(final int pieceCoordinate, final GeneralColor pieceColor) {
-        super(pieceCoordinate, pieceColor);
+        super(PieceType.Bishop, pieceCoordinate, pieceColor);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class Bishop extends Piece{
                 }
 
                 endCoordinate += candidateOffset;
-                if(BoardExtra.isValidSquareCoordinate(candidateOffset)) {
+                if(BoardExtra.isValidSquareCoordinate(endCoordinate)) {
                     final Square endSquare = board.getSquare(endCoordinate);
 
                     if(!endSquare.isSquareOccupied()) {

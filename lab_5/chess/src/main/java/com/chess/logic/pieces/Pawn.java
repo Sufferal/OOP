@@ -4,7 +4,6 @@ import com.chess.logic.GeneralColor;
 import com.chess.logic.board.Board;
 import com.chess.logic.board.BoardExtra;
 import com.chess.logic.board.Move;
-import com.chess.logic.board.Square;
 import com.google.common.collect.ImmutableList;
 
 import static com.chess.logic.board.Move.*;
@@ -17,7 +16,7 @@ public class Pawn extends Piece{
     private final static int[] CANDIDATE_MOVES = { 7, 8, 9, 16 };
 
     public Pawn(final int pieceCoordinate, final GeneralColor pieceColor) {
-        super(pieceCoordinate, pieceColor);
+        super(PieceType.Pawn, pieceCoordinate, pieceColor);
     }
 
     @Override

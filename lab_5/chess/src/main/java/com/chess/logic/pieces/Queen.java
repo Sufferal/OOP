@@ -17,7 +17,7 @@ public class Queen extends Piece {
     private final static int[] CANDIDATE_MOVES = { -9, -8, -7, -1, 1, 7, 8, 9 };
 
     public Queen(final int pieceCoordinate, final GeneralColor pieceColor) {
-        super(pieceCoordinate, pieceColor);
+        super(PieceType.Queen, pieceCoordinate, pieceColor);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class Queen extends Piece {
                 }
 
                 endCoordinate += candidateOffset;
-                if(BoardExtra.isValidSquareCoordinate(candidateOffset)) {
+                if(BoardExtra.isValidSquareCoordinate(endCoordinate)) {
                     final Square endSquare = board.getSquare(endCoordinate);
 
                     if(!endSquare.isSquareOccupied()) {

@@ -2,6 +2,9 @@ package com.chess.logic.board;
 
 import com.chess.logic.GeneralColor;
 import com.chess.logic.pieces.*;
+import com.chess.logic.player.BlackPlayer;
+import com.chess.logic.player.Player;
+import com.chess.logic.player.WhitePlayer;
 import com.google.common.collect.ImmutableList;
 
 import java.util.*;
@@ -12,13 +15,21 @@ public class Board {
     private final Collection<Piece> whitePieces;
     private final Collection<Piece> blackPieces;
 
+    private final WhitePlayer whitePlayer;
+    private final BlackPlayer blackPlayer;
+    private final Player currentPlayer;
+
     private Board(Builder builder) {
         this.chessBoard = createChessBoard(builder);
         this.whitePieces = findActivePieces(this.chessBoard, GeneralColor.WHITE);
         this.blackPieces = findActivePieces(this.chessBoard, GeneralColor.BLACK);
+        this.currentPlayer = null;
 
         final Collection<Move> whiteLegalMoves = findLegalMoves(this.whitePieces);
         final Collection<Move> blackLegalMoves = findLegalMoves(this.blackPieces);
+
+        this.whitePlayer = new WhitePlayer(this, whiteLegalMoves, blackLegalMoves);
+        this.blackPlayer = new BlackPlayer(this, whiteLegalMoves, blackLegalMoves);
     }
 
     @Override
@@ -32,6 +43,20 @@ public class Board {
             }
         }
         return builder.toString();
+    }
+
+    public Player whitePlayer() { return this.whitePlayer; }
+
+    public Player blackPlayer() { return this.blackPlayer; }
+
+    public Player currentPlayer() { return this.currentPlayer; }
+
+    public Collection<Piece> getBlackPieces() {
+        return this.blackPieces;
+    }
+
+    public Collection<Piece> getWhitePieces() {
+        return this.whitePieces;
     }
 
     private Collection<Move> findLegalMoves(final Collection<Piece> generalPieces) {
@@ -104,23 +129,22 @@ public class Board {
         builder.setPiece(new Pawn(54, GeneralColor.WHITE));
         builder.setPiece(new Pawn(55, GeneralColor.WHITE));
 
-//        builder.setPiece(new Rook(56, GeneralColor.WHITE));
+        builder.setPiece(new Rook(56, GeneralColor.WHITE));
         builder.setPiece(new Knight(57, GeneralColor.WHITE));
         builder.setPiece(new Bishop(58, GeneralColor.WHITE));
-//        builder.setPiece(new Queen(59, GeneralColor.WHITE));
+        builder.setPiece(new Queen(59, GeneralColor.WHITE));
         builder.setPiece(new King(60, GeneralColor.WHITE));
         builder.setPiece(new Bishop(61, GeneralColor.WHITE));
         builder.setPiece(new Knight(62, GeneralColor.WHITE));
-//        builder.setPiece(new Rook(63, GeneralColor.WHITE));
+        builder.setPiece(new Rook(63, GeneralColor.WHITE));
 
         // 1st to play is white
-        builder.setMove(GeneralColor.WHITE);
+        builder.setMover(GeneralColor.WHITE);
 
         return builder.build();
     }
 
     public static class Builder {
-
         Map<Integer, Piece> boardConfig;
         GeneralColor nextMovePlayer;
 
@@ -133,7 +157,7 @@ public class Board {
             return this;
         }
 
-        public Builder setMove(final GeneralColor nextMovePlayer) {
+        public Builder setMover(final GeneralColor nextMovePlayer) {
             this.nextMovePlayer = nextMovePlayer;
             return this;
         }

@@ -16,9 +16,20 @@ public abstract class Move {
         this.endCoordinate = endCoordinate;
     }
 
+    public int getEndCoordinate() {
+        return this.endCoordinate;
+    }
+
+    public abstract Board execute();
+
     public static final class MajorMove extends Move {
         public MajorMove(final Board board, final Piece currPiece, final int endCoordinate) {
             super(board, currPiece, endCoordinate);
+        }
+
+        @Override
+        public Board execute() {
+            return null;
         }
     }
 
@@ -29,6 +40,11 @@ public abstract class Move {
         public AttackMove(final Board board, final Piece currPiece, final int endCoordinate, final Piece attackedPiece) {
             super(board, currPiece, endCoordinate);
             this.attackedPiece = attackedPiece;
+        }
+
+        @Override
+        public Board execute() {
+            return null;
         }
     }
 }
