@@ -32,6 +32,10 @@ public abstract class Square {
     public abstract boolean isSquareOccupied();
     public abstract Piece getPiece();
 
+    public int getSquareCoordinate() {
+        return this.squareCoordinate;
+    }
+
     // Empty Square
     public static final class EmptySquare extends Square {
         private EmptySquare(final int coordinate) {

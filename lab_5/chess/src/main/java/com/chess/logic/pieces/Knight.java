@@ -56,6 +56,11 @@ public class Knight extends Piece{
         return ImmutableList.copyOf(legalMoves);
     }
 
+    @Override
+    public Knight movePiece(final Move move) {
+        return new Knight(move.getEndCoordinate(), move.getCurrPiece().getPieceColor());
+    }
+
     private static boolean isFirstFileRemoval(final int currentPos, final int posOffset) {
         return BoardExtra.FIRST_FILE[currentPos] && (posOffset == -17) || (posOffset == -10) || (posOffset == 6) || (posOffset == 15);
     }

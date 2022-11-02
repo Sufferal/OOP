@@ -56,6 +56,11 @@ public class Bishop extends Piece{
         return ImmutableList.copyOf(legalMoves);
     }
 
+    @Override
+    public Bishop movePiece(final Move move) {
+        return new Bishop(move.getEndCoordinate(), move.getCurrPiece().getPieceColor());
+    }
+
     private static boolean isFirstFileRemoval(final int currentPos, final int posOffset) {
         return BoardExtra.FIRST_FILE[currentPos] && (posOffset == -9) || (posOffset == 7);
     }

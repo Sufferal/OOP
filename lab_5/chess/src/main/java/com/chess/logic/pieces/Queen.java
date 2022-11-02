@@ -55,6 +55,11 @@ public class Queen extends Piece {
         return ImmutableList.copyOf(legalMoves);
     }
 
+    @Override
+    public Queen movePiece(final Move move) {
+        return new Queen(move.getEndCoordinate(), move.getCurrPiece().getPieceColor());
+    }
+
     private static boolean isFirstFileRemoval(final int currentPos, final int posOffset) {
         return BoardExtra.FIRST_FILE[currentPos] && (posOffset == -9) || (posOffset == -1) || (posOffset == 7);
     }

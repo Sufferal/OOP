@@ -63,6 +63,11 @@ public class Pawn extends Piece{
     }
 
     @Override
+    public Pawn movePiece(final Move move) {
+        return new Pawn(move.getEndCoordinate(), move.getCurrPiece().getPieceColor());
+    }
+
+    @Override
     public String toString() {
         return PieceType.Pawn.toString();
     }

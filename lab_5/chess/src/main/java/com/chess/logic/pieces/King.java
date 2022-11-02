@@ -50,6 +50,11 @@ public class King extends Piece{
         return ImmutableList.copyOf(legalMoves);
     }
 
+    @Override
+    public King movePiece(final Move move) {
+        return new King(move.getEndCoordinate(), move.getCurrPiece().getPieceColor());
+    }
+
     private static boolean isFirstFileRemoval(final int currentPos, final int posOffset) {
         return BoardExtra.FIRST_FILE[currentPos] && (posOffset == -9) || (posOffset == -1) || (posOffset == 7);
     }

@@ -6,6 +6,7 @@ import com.chess.logic.board.Move;
 import com.chess.logic.pieces.King;
 import com.chess.logic.pieces.Piece;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,11 +19,11 @@ public abstract class Player {
     private final boolean isInCheck;
 
 
-    protected Player(final Board board, final Collection<Move> legalMoves, Collection<Move> opponentMoves, boolean isInCheck) {
+    protected Player(final Board board, final Collection<Move> legalMoves, Collection<Move> opponentMoves) {
         this.board = board;
         this.playerKing = initKing();
+        this.legalMoves = ImmutableList.copyOf(Iterables.concat(legalMoves, findKingCastles(legalMoves, opponentMoves)));
         this.isInCheck = !Player.findAttacksOnSquare(this.playerKing.getPieceCoordinate(), opponentMoves).isEmpty();
-        this.legalMoves = legalMoves;
     }
 
     public King getPlayerKing() {
@@ -33,7 +34,7 @@ public abstract class Player {
         return this.legalMoves;
     }
 
-    private static Collection<Move> findAttacksOnSquare(int pieceCoordinate, Collection<Move> moves) {
+    protected static Collection<Move> findAttacksOnSquare(int pieceCoordinate, Collection<Move> moves) {
         final List<Move> attackMoves = new ArrayList<>();
 
         for (final Move move : moves) {
@@ -104,4 +105,5 @@ public abstract class Player {
     public abstract Collection<Piece> getActivePieces();
     public abstract GeneralColor getColor();
     public abstract Player getOpponent();
+    protected abstract Collection<Move> findKingCastles(Collection<Move> playerLegals, Collection<Move> opponentsLegals);
 }

@@ -11,12 +11,40 @@ public abstract class Piece {
     protected final int pieceCoordinate;
     protected final GeneralColor pieceColor;
     protected final boolean isFirstMove;
+    private final int cachedHashCode;
 
     public Piece(final PieceType pieceType, final int pieceCoordinate, final GeneralColor pieceColor) {
         this.pieceType = pieceType;
         this.pieceCoordinate = pieceCoordinate;
         this.pieceColor = pieceColor;
         this.isFirstMove = false;
+        this.cachedHashCode = generateHashCode();
+    }
+
+    private int generateHashCode() {
+        int result = pieceType.hashCode();
+        result = 31 * result + pieceColor.hashCode();
+        result = 31 * result + pieceCoordinate;
+        result = 31 * result + (isFirstMove ? 1 : 0);
+        return result;
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        if(this == other) {
+            return true;
+        }
+        if(!(other instanceof Piece)) {
+            return false;
+        }
+        final Piece otherPiece = (Piece) other;
+        return pieceCoordinate == otherPiece.getPieceCoordinate() && pieceType == otherPiece.getPieceType() &&
+                pieceColor == otherPiece.getPieceColor() && isFirstMove == otherPiece.isFirstMove();
+    }
+
+    @Override
+    public int hashCode() {
+        return this.cachedHashCode;
     }
 
     public GeneralColor getPieceColor() { return this.pieceColor; }
@@ -30,10 +58,17 @@ public abstract class Piece {
 
     public abstract Collection<Move> searchLegalMoves(final Board board);
 
+    public abstract Piece movePiece(Move move);
+
     public enum PieceType {
         Pawn("P") {
             @Override
             public boolean isKing() {
+                return false;
+            }
+
+            @Override
+            public boolean isRook() {
                 return false;
             }
         },
@@ -42,10 +77,20 @@ public abstract class Piece {
             public boolean isKing() {
                 return false;
             }
+
+            @Override
+            public boolean isRook() {
+                return false;
+            }
         },
         Bishop("B") {
             @Override
             public boolean isKing() {
+                return false;
+            }
+
+            @Override
+            public boolean isRook() {
                 return false;
             }
         },
@@ -54,10 +99,20 @@ public abstract class Piece {
             public boolean isKing() {
                 return false;
             }
+
+            @Override
+            public boolean isRook() {
+                return true;
+            }
         },
         Queen("Q") {
             @Override
             public boolean isKing() {
+                return false;
+            }
+
+            @Override
+            public boolean isRook() {
                 return false;
             }
         },
@@ -65,6 +120,11 @@ public abstract class Piece {
             @Override
             public boolean isKing() {
                 return true;
+            }
+
+            @Override
+            public boolean isRook() {
+                return false;
             }
         };
 
@@ -80,5 +140,7 @@ public abstract class Piece {
         }
 
         public abstract boolean isKing();
+
+        public abstract boolean isRook();
     }
 }
