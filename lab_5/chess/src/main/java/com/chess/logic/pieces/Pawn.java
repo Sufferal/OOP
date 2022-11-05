@@ -16,7 +16,11 @@ public class Pawn extends Piece{
     private final static int[] CANDIDATE_MOVES = { 7, 8, 9, 16 };
 
     public Pawn(final int pieceCoordinate, final GeneralColor pieceColor) {
-        super(PieceType.Pawn, pieceCoordinate, pieceColor);
+        super(PieceType.Pawn, pieceCoordinate, pieceColor, true);
+    }
+
+    public Pawn(final int pieceCoordinate, final GeneralColor pieceColor, final boolean isFirstMove) {
+        super(PieceType.Pawn, pieceCoordinate, pieceColor, isFirstMove);
     }
 
     @Override
@@ -31,15 +35,20 @@ public class Pawn extends Piece{
             }
 
             if (candidateOffset == 8 && !board.getSquare(endCoordinate).isSquareOccupied()) {
-                legalMoves.add(new MajorMove(board, this, endCoordinate));
+
+                if (this.pieceColor.isPawnPromotionSquare(endCoordinate)) {
+                    legalMoves.add(new PawnPromotion(new PawnMove(board, this, endCoordinate)));
+                } else {
+                    legalMoves.add(new PawnMove(board, this, endCoordinate));
+                }
             } else if (candidateOffset == 16 && this.isFirstMove() &&
-                    (BoardExtra.SECOND_ROW[this.pieceCoordinate] && this.getPieceColor().isBlack()) ||
-                    (BoardExtra.SEVENTH_ROW[this.pieceCoordinate] && this.getPieceColor().isWhite())
+                    ((BoardExtra.SECOND_ROW[this.pieceCoordinate] && this.getPieceColor().isBlack()) ||
+                    (BoardExtra.SEVENTH_ROW[this.pieceCoordinate] && this.getPieceColor().isWhite()))
             ) {
                 final int behindEndCoordinate = this.pieceCoordinate + (this.pieceColor.getDirection() * 8);
                 if(!board.getSquare(behindEndCoordinate).isSquareOccupied() &&
                         !board.getSquare(endCoordinate).isSquareOccupied()) {
-                    legalMoves.add(new MajorMove(board, this, endCoordinate));
+                    legalMoves.add(new PawnJump(board, this, endCoordinate));
                 }
             } else if (candidateOffset == 7 &&
                             !((BoardExtra.EIGHTH_FILE[this.pieceCoordinate] && this.pieceColor.isWhite()) ||
@@ -48,14 +57,45 @@ public class Pawn extends Piece{
                 if(board.getSquare(endCoordinate).isSquareOccupied()) {
                     final Piece endPiece = board.getSquare(endCoordinate).getPiece();
                     if (this.pieceColor != endPiece.getPieceColor()) {
-                        legalMoves.add(new MajorMove(board, this, endCoordinate));
+                        if (this.pieceColor.isPawnPromotionSquare(endCoordinate)) {
+                            legalMoves.add(new PawnPromotion(new PawnAttackMove(board, this, endCoordinate, endPiece)));
+                        } else {
+                            legalMoves.add(new PawnAttackMove(board, this, endCoordinate, endPiece));
+                        }
+                    }
+                } else if (board.getEnPassantPawn() != null) {
+                    if(board.getEnPassantPawn().getPieceCoordinate() == (this.pieceCoordinate
+                            + (this.pieceColor.getOppositeDirection()))) {
+                        final Piece pieceOnCandidate = board.getEnPassantPawn();
+                        if(this.pieceColor != pieceOnCandidate.getPieceColor()) {
+                            legalMoves.add(new PawnEnPassantAttackMove(board, this, endCoordinate,
+                                    pieceOnCandidate));
+                        }
                     }
                 }
             } else if (candidateOffset == 9 &&
                             !((BoardExtra.EIGHTH_FILE[this.pieceCoordinate] && this.pieceColor.isBlack()) ||
                             (BoardExtra.FIRST_FILE[this.pieceCoordinate] && this.pieceColor.isWhite())))
             {
-                legalMoves.add(new MajorMove(board, this, endCoordinate));
+                if(board.getSquare(endCoordinate).isSquareOccupied()) {
+                    final Piece endPiece = board.getSquare(endCoordinate).getPiece();
+                    if (this.pieceColor != endPiece.getPieceColor()) {
+                        if (this.pieceColor.isPawnPromotionSquare(endCoordinate)) {
+                            legalMoves.add(new PawnPromotion(new PawnAttackMove(board, this, endCoordinate, endPiece)));
+                        } else {
+                            legalMoves.add(new PawnAttackMove(board, this, endCoordinate, endPiece));
+                        }
+                    }
+                } else if (board.getEnPassantPawn() != null) {
+                    if(board.getEnPassantPawn().getPieceCoordinate() == (this.pieceCoordinate
+                            - (this.pieceColor.getOppositeDirection()))) {
+                        final Piece pieceOnCandidate = board.getEnPassantPawn();
+                        if(this.pieceColor != pieceOnCandidate.getPieceColor()) {
+                            legalMoves.add(new PawnEnPassantAttackMove(board, this, endCoordinate,
+                                    pieceOnCandidate));
+                        }
+                    }
+                }
             }
         }
 
@@ -70,6 +110,10 @@ public class Pawn extends Piece{
     @Override
     public String toString() {
         return PieceType.Pawn.toString();
+    }
+
+    public Piece getPromotionPiece() {
+        return new Queen(this.pieceCoordinate, this.pieceColor, false);
     }
 }
 

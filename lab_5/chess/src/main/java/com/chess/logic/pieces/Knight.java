@@ -18,7 +18,11 @@ public class Knight extends Piece{
     private final static int[] CANDIDATE_MOVES = { -17, -15, -10, -6, 6, 10, 15, 17 };
 
     public Knight(final int pieceCoordinate, final GeneralColor pieceColor) {
-        super(PieceType.Knight, pieceCoordinate, pieceColor);
+        super(PieceType.Knight, pieceCoordinate, pieceColor, true);
+    }
+
+    public Knight(final int pieceCoordinate, final GeneralColor pieceColor, final boolean isFirstMove) {
+        super(PieceType.Knight, pieceCoordinate, pieceColor, isFirstMove);
     }
 
     @Override
@@ -47,7 +51,7 @@ public class Knight extends Piece{
                     final GeneralColor endPieceColor = endPiece.getPieceColor();
 
                     if(this.pieceColor != endPieceColor) {
-                        legalMoves.add(new AttackMove(board, this, endCoordinate, endPiece));
+                        legalMoves.add(new MajorAttackMove(board, this, endCoordinate, endPiece));
                     }
                 }
             }

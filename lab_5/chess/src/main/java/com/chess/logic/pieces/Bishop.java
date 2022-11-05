@@ -18,7 +18,11 @@ public class Bishop extends Piece{
     private final static int[] CANDIDATE_MOVES = { -9, -7, 7, 9 };
 
     public Bishop(final int pieceCoordinate, final GeneralColor pieceColor) {
-        super(PieceType.Bishop, pieceCoordinate, pieceColor);
+        super(PieceType.Bishop, pieceCoordinate, pieceColor, true);
+    }
+
+    public Bishop(final int pieceCoordinate, final GeneralColor pieceColor, final boolean isFirstMove) {
+        super(PieceType.Bishop, pieceCoordinate, pieceColor, isFirstMove);
     }
 
     @Override
@@ -45,7 +49,7 @@ public class Bishop extends Piece{
                         final GeneralColor endPieceColor = endPiece.getPieceColor();
 
                         if(this.pieceColor != endPieceColor) {
-                            legalMoves.add(new AttackMove(board, this, endCoordinate, endPiece));
+                            legalMoves.add(new MajorAttackMove(board, this, endCoordinate, endPiece));
                         }
                         break;
                     }

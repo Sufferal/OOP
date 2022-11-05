@@ -20,11 +20,14 @@ public class Board {
     private final BlackPlayer blackPlayer;
     private final Player currentPlayer;
 
+    private final Pawn enPassantPawn;
+
     private Board(final Builder builder) {
         this.chessBoard = createChessBoard(builder);
         this.whitePieces = findActivePieces(this.chessBoard, GeneralColor.WHITE);
         this.blackPieces = findActivePieces(this.chessBoard, GeneralColor.BLACK);
 
+        this.enPassantPawn = builder.enPassantPawn;
 
         final Collection<Move> whiteLegalMoves = findLegalMoves(this.whitePieces);
         final Collection<Move> blackLegalMoves = findLegalMoves(this.blackPieces);
@@ -48,15 +51,12 @@ public class Board {
     }
 
     public Player whitePlayer() { return this.whitePlayer; }
-
     public Player blackPlayer() { return this.blackPlayer; }
-
     public Player currentPlayer() { return this.currentPlayer; }
-
+    public Pawn getEnPassantPawn() { return this.enPassantPawn; }
     public Collection<Piece> getBlackPieces() {
         return this.blackPieces;
     }
-
     public Collection<Piece> getWhitePieces() {
         return this.whitePieces;
     }

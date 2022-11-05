@@ -16,7 +16,11 @@ public class King extends Piece{
     private final static int[] CANDIDATE_MOVES = { -9, -8, -7, -1, 1, 7, 8, 9 };
 
     public King(final int pieceCoordinate, final GeneralColor pieceColor) {
-        super(PieceType.King, pieceCoordinate, pieceColor);
+        super(PieceType.King, pieceCoordinate, pieceColor, true);
+    }
+
+    public King(final int pieceCoordinate, final GeneralColor pieceColor, final boolean isFirstMove) {
+        super(PieceType.King, pieceCoordinate, pieceColor, isFirstMove);
     }
 
     @Override
@@ -41,7 +45,7 @@ public class King extends Piece{
                     final GeneralColor endPieceColor = endPiece.getPieceColor();
 
                     if(this.pieceColor != endPieceColor) {
-                        legalMoves.add(new Move.AttackMove(board, this, endCoordinate, endPiece));
+                        legalMoves.add(new Move.MajorAttackMove(board, this, endCoordinate, endPiece));
                     }
                 }
             }

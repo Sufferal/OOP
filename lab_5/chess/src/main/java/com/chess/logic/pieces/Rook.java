@@ -17,7 +17,11 @@ public class Rook extends Piece{
     private final static int[] CANDIDATE_MOVES = { -8, -1, 1, 8 };
 
     public Rook(final int pieceCoordinate, final GeneralColor pieceColor) {
-        super(PieceType.Rook, pieceCoordinate, pieceColor);
+        super(PieceType.Rook, pieceCoordinate, pieceColor, true);
+    }
+
+    public Rook(final int pieceCoordinate, final GeneralColor pieceColor, final boolean isFirstMove) {
+        super(PieceType.Rook, pieceCoordinate, pieceColor, isFirstMove);
     }
 
     @Override
@@ -44,7 +48,7 @@ public class Rook extends Piece{
                         final GeneralColor endPieceColor = endPiece.getPieceColor();
 
                         if(this.pieceColor != endPieceColor) {
-                            legalMoves.add(new AttackMove(board, this, endCoordinate, endPiece));
+                            legalMoves.add(new MajorAttackMove(board, this, endCoordinate, endPiece));
                         }
                         break;
                     }

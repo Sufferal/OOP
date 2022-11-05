@@ -70,8 +70,8 @@ public abstract class Square {
         @Override
         public String toString() {
             return getPiece().getPieceColor().isWhite() ?
-                    getPiece().toString().toUpperCase() : "~" +
-                    getPiece().toString().toUpperCase();
+                    "W" + getPiece().toString().toUpperCase() :
+                    "B" + getPiece().toString().toUpperCase();
         }
 
 
