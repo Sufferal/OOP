@@ -1,80 +1,78 @@
 package com.chess.logic.pieces;
 
-import com.chess.logic.GeneralColor;
+import com.chess.logic.Color;
 import com.chess.logic.board.Board;
 import com.chess.logic.board.BoardExtra;
 import com.chess.logic.board.Move;
-import com.chess.logic.board.Square;
-import com.google.common.collect.ImmutableList;
-
-import static com.chess.logic.board.Move.*;
+import com.chess.logic.board.Move.MajorAttackMove;
+import com.chess.logic.board.Move.MajorMove;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
-public class Rook extends Piece{
-    private final static int[] CANDIDATE_MOVES = { -8, -1, 1, 8 };
+public final class Rook extends Piece {
 
-    public Rook(final int pieceCoordinate, final GeneralColor pieceColor) {
-        super(PieceType.Rook, pieceCoordinate, pieceColor, true);
+    private final static int[] MOVE_COORDINATES = { -8, -1, 1, 8 };
+
+    public Rook(final Color color, final int piecePos) {
+        super(PieceType.ROOK, color, piecePos, true);
     }
 
-    public Rook(final int pieceCoordinate, final GeneralColor pieceColor, final boolean isFirstMove) {
-        super(PieceType.Rook, pieceCoordinate, pieceColor, isFirstMove);
+    public Rook(final Color color,
+                final int piecePos,
+                final boolean isFirstMove) {
+        super(PieceType.ROOK, color, piecePos, isFirstMove);
     }
 
     @Override
-    public Collection<Move> searchLegalMoves(final Board board) {
+    public Collection<Move> calculateLegalMoves(final Board board) {
         final List<Move> legalMoves = new ArrayList<>();
-
-        for(final int candidateOffset: CANDIDATE_MOVES) {
-            int endCoordinate = this.pieceCoordinate;
-
-            while(BoardExtra.isValidSquareCoordinate(endCoordinate)) {
-                if(isFirstFileRemoval(endCoordinate, candidateOffset) ||
-                        isEighthFileRemoval(endCoordinate, candidateOffset)) {
+        for (final int currentOffset : MOVE_COORDINATES) {
+            int endCandidate = this.piecePos;
+            while (BoardExtra.isValidSquareCoordinate(endCandidate)) {
+                if (isFileRemoval(currentOffset, endCandidate)) {
                     break;
                 }
-
-                endCoordinate += candidateOffset;
-                if(BoardExtra.isValidSquareCoordinate(endCoordinate)) {
-                    final Square endSquare = board.getSquare(endCoordinate);
-
-                    if(!endSquare.isSquareOccupied()) {
-                        legalMoves.add(new MajorMove(board, this, endCoordinate));
+                endCandidate += currentOffset;
+                if (BoardExtra.isValidSquareCoordinate(endCandidate)) {
+                    final Piece pieceAtDestination = board.getPiece(endCandidate);
+                    if (pieceAtDestination == null) {
+                        legalMoves.add(new MajorMove(board, this, endCandidate));
                     } else {
-                        final Piece endPiece = endSquare.getPiece();
-                        final GeneralColor endPieceColor = endPiece.getPieceColor();
-
-                        if(this.pieceColor != endPieceColor) {
-                            legalMoves.add(new MajorAttackMove(board, this, endCoordinate, endPiece));
+                        final Color pieceAtDestinationColor = pieceAtDestination.getPieceColor();
+                        if (this.pieceColor != pieceAtDestinationColor) {
+                            legalMoves.add(new MajorAttackMove(board, this, endCandidate,
+                                    pieceAtDestination));
                         }
                         break;
                     }
                 }
             }
         }
-
-        return ImmutableList.copyOf(legalMoves);
+        return Collections.unmodifiableList(legalMoves);
     }
+
+    @Override
+    public int locationBonus() {
+        return this.pieceColor.rookBonus(this.piecePos);
+    }
+
     @Override
     public Rook movePiece(final Move move) {
-        return new Rook(move.getEndCoordinate(), move.getCurrPiece().getPieceColor());
+        return PieceExtra.INSTANCE.getMovedRook(move.getMovedPiece().getPieceColor(), move.getEndCoordinate());
     }
 
     @Override
     public String toString() {
-        return PieceType.Rook.toString();
+        return "\u2656";
     }
 
-    private static boolean isFirstFileRemoval(final int currentPos, final int posOffset) {
-        return BoardExtra.FIRST_FILE[currentPos] && (posOffset == -1);
+    private static boolean isFileRemoval(final int currentCandidate,
+                                         final int candidateDestinationCoordinate) {
+        return (BoardExtra.INSTANCE.FILE_A.get(candidateDestinationCoordinate) && (currentCandidate == -1)) ||
+                (BoardExtra.INSTANCE.FILE_H.get(candidateDestinationCoordinate) && (currentCandidate == 1));
     }
-
-    private static boolean isEighthFileRemoval(final int currentPos, final int posOffset) {
-        return BoardExtra.EIGHTH_FILE[currentPos] && (posOffset == 1);
-    }
-
 
 }

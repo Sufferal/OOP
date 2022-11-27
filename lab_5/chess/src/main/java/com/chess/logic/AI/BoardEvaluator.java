@@ -1,4 +1,4 @@
-package com.chess.logic.player.AI;
+package com.chess.logic.AI;
 
 import com.chess.logic.board.Board;
 

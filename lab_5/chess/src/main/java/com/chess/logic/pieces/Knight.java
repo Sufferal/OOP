@@ -1,88 +1,94 @@
 package com.chess.logic.pieces;
 
-import com.chess.logic.GeneralColor;
+import com.chess.logic.Color;
 import com.chess.logic.board.Board;
 import com.chess.logic.board.BoardExtra;
 import com.chess.logic.board.Move;
-import com.chess.logic.board.Square;
-import com.google.common.collect.ImmutableList;
+import com.chess.logic.board.Move.MajorAttackMove;
+import com.chess.logic.board.Move.MajorMove;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
-import static com.chess.logic.board.Move.*;
+public final class Knight extends Piece {
 
-public class Knight extends Piece{
+    private final static int[] MOVE_COORDINATES = { -17, -15, -10, -6, 6, 10, 15, 17 };
 
-    private final static int[] CANDIDATE_MOVES = { -17, -15, -10, -6, 6, 10, 15, 17 };
-
-    public Knight(final int pieceCoordinate, final GeneralColor pieceColor) {
-        super(PieceType.Knight, pieceCoordinate, pieceColor, true);
+    public Knight(final Color color,
+                  final int piecePos) {
+        super(PieceType.KNIGHT, color, piecePos, true);
     }
 
-    public Knight(final int pieceCoordinate, final GeneralColor pieceColor, final boolean isFirstMove) {
-        super(PieceType.Knight, pieceCoordinate, pieceColor, isFirstMove);
+    public Knight(final Color color,
+                  final int piecePos,
+                  final boolean isFirstMove) {
+        super(PieceType.KNIGHT, color, piecePos, isFirstMove);
     }
 
     @Override
-    public Collection<Move> searchLegalMoves(final Board board) {
-
+    public Collection<Move> calculateLegalMoves(final Board board) {
         final List<Move> legalMoves = new ArrayList<>();
-
-        for(final int currentCandidate: CANDIDATE_MOVES) {
-            final int endCoordinate = this.pieceCoordinate + currentCandidate;
-
-            if(BoardExtra.isValidSquareCoordinate(endCoordinate)) {
-
-                if(isFirstFileRemoval(this.pieceCoordinate, currentCandidate) ||
-                        isSecondFileRemoval(this.pieceCoordinate, currentCandidate) ||
-                        isSeventhFileRemoval(this.pieceCoordinate, currentCandidate) ||
-                        isEighthFileRemoval(this.pieceCoordinate, currentCandidate)) {
-                    continue;
-                }
-
-                final Square endSquare = board.getSquare(endCoordinate);
-
-                if(!endSquare.isSquareOccupied()) {
-                    legalMoves.add(new MajorMove(board, this, endCoordinate));
+        for (final int currentOffset : MOVE_COORDINATES) {
+            if(isFirstFileRemoval(this.piecePos, currentOffset) ||
+                    isSecondFileRemoval(this.piecePos, currentOffset) ||
+                    isSeventhFileRemoval(this.piecePos, currentOffset) ||
+                    isEighthFileRemoval(this.piecePos, currentOffset)) {
+                continue;
+            }
+            final int endCandidate = this.piecePos + currentOffset;
+            if (BoardExtra.isValidSquareCoordinate(endCandidate)) {
+                final Piece pieceAtDestination = board.getPiece(endCandidate);
+                if (pieceAtDestination == null) {
+                    legalMoves.add(new MajorMove(board, this, endCandidate));
                 } else {
-                    final Piece endPiece = endSquare.getPiece();
-                    final GeneralColor endPieceColor = endPiece.getPieceColor();
-
-                    if(this.pieceColor != endPieceColor) {
-                        legalMoves.add(new MajorAttackMove(board, this, endCoordinate, endPiece));
+                    final Color pieceAtDestinationColor = pieceAtDestination.getPieceColor();
+                    if (this.pieceColor != pieceAtDestinationColor) {
+                        legalMoves.add(new MajorAttackMove(board, this, endCandidate,
+                                pieceAtDestination));
                     }
                 }
             }
         }
+        return Collections.unmodifiableList(legalMoves);
+    }
 
-        return ImmutableList.copyOf(legalMoves);
+    @Override
+    public int locationBonus() {
+        return this.pieceColor.knightBonus(this.piecePos);
     }
 
     @Override
     public Knight movePiece(final Move move) {
-        return new Knight(move.getEndCoordinate(), move.getCurrPiece().getPieceColor());
-    }
-
-    private static boolean isFirstFileRemoval(final int currentPos, final int posOffset) {
-        return BoardExtra.FIRST_FILE[currentPos] && (posOffset == -17) || (posOffset == -10) || (posOffset == 6) || (posOffset == 15);
-    }
-
-    private static boolean isSecondFileRemoval(final int currentPos, final int posOffset) {
-        return BoardExtra.SECOND_FILE[currentPos] && (posOffset == -10) || (posOffset == 6);
-    }
-
-    private static boolean isSeventhFileRemoval(final int currentPos, final int posOffset) {
-        return BoardExtra.SEVENTH_FILE[currentPos] && (posOffset == -6) || (posOffset == 10);
-    }
-
-    private static boolean isEighthFileRemoval(final int currentPos, final int posOffset) {
-        return BoardExtra.EIGHTH_FILE[currentPos] && (posOffset == -15) || (posOffset == -6) || (posOffset == 10) || (posOffset == 17);
+        return PieceExtra.INSTANCE.getMovedKnight(move.getMovedPiece().getPieceColor(), move.getEndCoordinate());
     }
 
     @Override
     public String toString() {
-        return PieceType.Knight.toString();
+        return "\u2658";
     }
+
+    private static boolean isFirstFileRemoval(final int currentPosition,
+                                              final int candidateOffset) {
+        return BoardExtra.INSTANCE.FILE_A.get(currentPosition) && ((candidateOffset == -17) ||
+                (candidateOffset == -10) || (candidateOffset == 6) || (candidateOffset == 15));
+    }
+
+    private static boolean isSecondFileRemoval(final int currentPosition,
+                                               final int candidateOffset) {
+        return BoardExtra.INSTANCE.FILE_B.get(currentPosition) && ((candidateOffset == -10) || (candidateOffset == 6));
+    }
+
+    private static boolean isSeventhFileRemoval(final int currentPosition,
+                                                final int candidateOffset) {
+        return BoardExtra.INSTANCE.FILE_G.get(currentPosition) && ((candidateOffset == -6) || (candidateOffset == 10));
+    }
+
+    private static boolean isEighthFileRemoval(final int currentPosition,
+                                               final int candidateOffset) {
+        return BoardExtra.INSTANCE.FILE_H.get(currentPosition) && ((candidateOffset == -15) || (candidateOffset == -6) ||
+                (candidateOffset == 10) || (candidateOffset == 17));
+    }
+
 }
