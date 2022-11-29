@@ -2,7 +2,7 @@ package com.chess.logic.pieces;
 
 import com.chess.logic.Color;
 import com.chess.logic.board.Board;
-import com.chess.logic.board.Move;
+import com.chess.logic.move.Move;
 
 import java.util.Collection;
 

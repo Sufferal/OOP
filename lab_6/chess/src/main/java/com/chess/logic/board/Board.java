@@ -1,7 +1,8 @@
 package com.chess.logic.board;
 
 import com.chess.logic.Color;
-import com.chess.logic.board.Move.MoveCreation;
+import com.chess.logic.move.Move;
+import com.chess.logic.move.MoveCreation;
 import com.chess.logic.pieces.*;
 import com.chess.logic.player.BlackPlayer;
 import com.chess.logic.player.Player;
@@ -26,20 +27,20 @@ public final class Board {
     private final Move transitionMove;
 
     private static final Board STANDARD_BOARD = createStandardBoardImpl();
-    private Board(final BoardCreation boardCreation) {
-        this.boardConfig = Collections.unmodifiableMap(boardCreation.boardConfig);
-        this.whitePieces = calculateActivePieces(boardCreation, Color.WHITE);
-        this.blackPieces = calculateActivePieces(boardCreation, Color.BLACK);
+    private Board(final Builder builder) {
+        this.boardConfig = Collections.unmodifiableMap(builder.boardConfig);
+        this.whitePieces = calculateActivePieces(builder, Color.WHITE);
+        this.blackPieces = calculateActivePieces(builder, Color.BLACK);
 
-        this.enPassantPawn = boardCreation.enPassantPawn;
+        this.enPassantPawn = builder.enPassantPawn;
 
         final Collection<Move> whiteStandardMoves = calculateLegalMoves(this.whitePieces);
         final Collection<Move> blackStandardMoves = calculateLegalMoves(this.blackPieces);
 
         this.whitePlayer = new WhitePlayer(this, whiteStandardMoves, blackStandardMoves);
         this.blackPlayer = new BlackPlayer(this, whiteStandardMoves, blackStandardMoves);
-        this.currentPlayer = boardCreation.nextMoveMaker.choosePlayerByColor(this.whitePlayer, this.blackPlayer);
-        this.transitionMove = boardCreation.transitionMove != null ? boardCreation.transitionMove : MoveCreation.getInvalidMove();
+        this.currentPlayer = builder.nextMoveMaker.choosePlayerByColor(this.whitePlayer, this.blackPlayer);
+        this.transitionMove = builder.transitionMove != null ? builder.transitionMove : MoveCreation.getInvalidMove();
     }
 
     private static String boardVisuals(final Piece piece) {
@@ -92,210 +93,209 @@ public final class Board {
     }
 
     public static Board createStalematedBoard() {
-        final BoardCreation boardCreation = new BoardCreation();
+        final Builder builder = new Builder();
         // Black Layout
-        boardCreation.setPiece(new King(Color.BLACK, 0, false, false));
+        builder.setPiece(new King(Color.BLACK, 0, false, false));
 
 
-        boardCreation.setPiece(new Queen(Color.WHITE, 17));
-        boardCreation.setPiece(new King(Color.WHITE, 18, false, false));
+        builder.setPiece(new Queen(Color.WHITE, 17));
+        builder.setPiece(new King(Color.WHITE, 18, false, false));
 
         //white to move
-        boardCreation.setMoveMaker(Color.WHITE);
+        builder.setMoveMaker(Color.WHITE);
         //build the board
-        return boardCreation.create();
+        return builder.build();
     }
     public static Board createQueenRookCheckmateBoard() {
-        final BoardCreation boardCreation = new BoardCreation();
+        final Builder builder = new Builder();
         // Black Layout
-        boardCreation.setPiece(new King(Color.BLACK, 27, false, false));
+        builder.setPiece(new King(Color.BLACK, 27, false, false));
 
 
-        boardCreation.setPiece(new Queen(Color.WHITE, 56));
-        boardCreation.setPiece(new King(Color.WHITE, 60, false, false));
-        boardCreation.setPiece(new Rook(Color.WHITE, 63));
+        builder.setPiece(new Queen(Color.WHITE, 56));
+        builder.setPiece(new King(Color.WHITE, 60, false, false));
+        builder.setPiece(new Rook(Color.WHITE, 63));
 
         //white to move
-        boardCreation.setMoveMaker(Color.WHITE);
+        builder.setMoveMaker(Color.WHITE);
         //build the board
-        return boardCreation.create();
+        return builder.build();
     }
     public static Board create2RooksCheckmateBoard() {
-        final BoardCreation boardCreation = new BoardCreation();
+        final Builder builder = new Builder();
         // Black Layout
-        boardCreation.setPiece(new King(Color.BLACK, 28, false, false));
+        builder.setPiece(new King(Color.BLACK, 28, false, false));
 
-        boardCreation.setPiece(new Rook(Color.WHITE, 56));
-        boardCreation.setPiece(new King(Color.WHITE, 60, false, false));
-        boardCreation.setPiece(new Rook(Color.WHITE, 63));
+        builder.setPiece(new Rook(Color.WHITE, 56));
+        builder.setPiece(new King(Color.WHITE, 60, false, false));
+        builder.setPiece(new Rook(Color.WHITE, 63));
 
         //white to move
-        boardCreation.setMoveMaker(Color.WHITE);
+        builder.setMoveMaker(Color.WHITE);
         //build the board
-        return boardCreation.create();
+        return builder.build();
     }
     public static Board createPosition1Board() {
-        final BoardCreation boardCreation = new BoardCreation();
-        boardCreation.setPiece(new Rook(Color.BLACK, 0));
-        boardCreation.setPiece(new Knight(Color.BLACK, 1));
-        boardCreation.setPiece(new Bishop(Color.BLACK, 27));
-        boardCreation.setPiece(new Queen(Color.BLACK, 19));
-        boardCreation.setPiece(new King(Color.BLACK, 6, false, false));
-        boardCreation.setPiece(new Bishop(Color.BLACK, 14));
-        boardCreation.setPiece(new Rook(Color.BLACK, 3));
-        boardCreation.setPiece(new Pawn(Color.BLACK, 8));
-        boardCreation.setPiece(new Pawn(Color.BLACK, 10));
-        boardCreation.setPiece(new Pawn(Color.BLACK, 12));
-        boardCreation.setPiece(new Pawn(Color.BLACK, 13));
-        boardCreation.setPiece(new Pawn(Color.BLACK, 22));
-        boardCreation.setPiece(new Pawn(Color.BLACK, 15));
+        final Builder builder = new Builder();
+        builder.setPiece(new Rook(Color.BLACK, 0));
+        builder.setPiece(new Knight(Color.BLACK, 1));
+        builder.setPiece(new Bishop(Color.BLACK, 27));
+        builder.setPiece(new Queen(Color.BLACK, 19));
+        builder.setPiece(new King(Color.BLACK, 6, false, false));
+        builder.setPiece(new Bishop(Color.BLACK, 14));
+        builder.setPiece(new Rook(Color.BLACK, 3));
+        builder.setPiece(new Pawn(Color.BLACK, 8));
+        builder.setPiece(new Pawn(Color.BLACK, 10));
+        builder.setPiece(new Pawn(Color.BLACK, 12));
+        builder.setPiece(new Pawn(Color.BLACK, 13));
+        builder.setPiece(new Pawn(Color.BLACK, 22));
+        builder.setPiece(new Pawn(Color.BLACK, 15));
         // White Layout
-        boardCreation.setPiece(new Pawn(Color.WHITE, 48));
-        boardCreation.setPiece(new Pawn(Color.WHITE, 49));
-        boardCreation.setPiece(new Pawn(Color.WHITE, 25));
-        boardCreation.setPiece(new Pawn(Color.WHITE, 35));
-        boardCreation.setPiece(new Pawn(Color.WHITE, 53));
-        boardCreation.setPiece(new Pawn(Color.WHITE, 54));
-        boardCreation.setPiece(new Pawn(Color.WHITE, 47));
-        boardCreation.setPiece(new Rook(Color.WHITE, 58));
-        boardCreation.setPiece(new Bishop(Color.WHITE, 52));
-        boardCreation.setPiece(new Queen(Color.WHITE, 59));
-        boardCreation.setPiece(new King(Color.WHITE, 62, false, false));
-        boardCreation.setPiece(new Bishop(Color.WHITE, 44));
-        boardCreation.setPiece(new Knight(Color.WHITE, 45));
-        boardCreation.setPiece(new Rook(Color.WHITE, 61));
+        builder.setPiece(new Pawn(Color.WHITE, 48));
+        builder.setPiece(new Pawn(Color.WHITE, 49));
+        builder.setPiece(new Pawn(Color.WHITE, 25));
+        builder.setPiece(new Pawn(Color.WHITE, 35));
+        builder.setPiece(new Pawn(Color.WHITE, 53));
+        builder.setPiece(new Pawn(Color.WHITE, 54));
+        builder.setPiece(new Pawn(Color.WHITE, 47));
+        builder.setPiece(new Rook(Color.WHITE, 58));
+        builder.setPiece(new Bishop(Color.WHITE, 52));
+        builder.setPiece(new Queen(Color.WHITE, 59));
+        builder.setPiece(new King(Color.WHITE, 62, false, false));
+        builder.setPiece(new Bishop(Color.WHITE, 44));
+        builder.setPiece(new Knight(Color.WHITE, 45));
+        builder.setPiece(new Rook(Color.WHITE, 61));
 
         //white to move
-        boardCreation.setMoveMaker(Color.WHITE);
+        builder.setMoveMaker(Color.WHITE);
         //build the board
-        return boardCreation.create();
+        return builder.build();
     }
     public static Board createPosition2Board() {
-        final BoardCreation boardCreation = new BoardCreation();
-        boardCreation.setPiece(new Rook(Color.BLACK, 0));
-        boardCreation.setPiece(new Knight(Color.BLACK, 17));
-        boardCreation.setPiece(new Bishop(Color.BLACK, 2));
-        boardCreation.setPiece(new Queen(Color.BLACK, 10));
-        boardCreation.setPiece(new King(Color.BLACK, 6, false, false));
-        boardCreation.setPiece(new Bishop(Color.BLACK, 14));
-        boardCreation.setPiece(new Rook(Color.BLACK, 5));
-        boardCreation.setPiece(new Pawn(Color.BLACK, 32));
-        boardCreation.setPiece(new Pawn(Color.BLACK, 25));
-        boardCreation.setPiece(new Pawn(Color.BLACK, 18));
-        boardCreation.setPiece(new Pawn(Color.BLACK, 20));
-        boardCreation.setPiece(new Pawn(Color.BLACK, 22));
-        boardCreation.setPiece(new Pawn(Color.BLACK, 13));
-        boardCreation.setPiece(new Pawn(Color.BLACK, 15));
+        final Builder builder = new Builder();
+        builder.setPiece(new Rook(Color.BLACK, 0));
+        builder.setPiece(new Knight(Color.BLACK, 17));
+        builder.setPiece(new Bishop(Color.BLACK, 2));
+        builder.setPiece(new Queen(Color.BLACK, 10));
+        builder.setPiece(new King(Color.BLACK, 6, false, false));
+        builder.setPiece(new Bishop(Color.BLACK, 14));
+        builder.setPiece(new Rook(Color.BLACK, 5));
+        builder.setPiece(new Pawn(Color.BLACK, 32));
+        builder.setPiece(new Pawn(Color.BLACK, 25));
+        builder.setPiece(new Pawn(Color.BLACK, 18));
+        builder.setPiece(new Pawn(Color.BLACK, 20));
+        builder.setPiece(new Pawn(Color.BLACK, 22));
+        builder.setPiece(new Pawn(Color.BLACK, 13));
+        builder.setPiece(new Pawn(Color.BLACK, 15));
         // White Layout
-        boardCreation.setPiece(new Pawn(Color.WHITE, 40));
-        boardCreation.setPiece(new Pawn(Color.WHITE, 49));
-        boardCreation.setPiece(new Pawn(Color.WHITE, 53));
-        boardCreation.setPiece(new Pawn(Color.WHITE, 54));
-        boardCreation.setPiece(new Pawn(Color.WHITE, 46));
-        boardCreation.setPiece(new Pawn(Color.WHITE, 44));
-        boardCreation.setPiece(new Pawn(Color.WHITE, 35));
-        boardCreation.setPiece(new Rook(Color.WHITE, 59));
-        boardCreation.setPiece(new Knight(Color.WHITE, 36));
-        boardCreation.setPiece(new Bishop(Color.WHITE, 50));
-        boardCreation.setPiece(new Queen(Color.WHITE, 52));
-        boardCreation.setPiece(new King(Color.WHITE, 58, false, false));
-        boardCreation.setPiece(new Knight(Color.WHITE, 45));
-        boardCreation.setPiece(new Rook(Color.WHITE, 63));
+        builder.setPiece(new Pawn(Color.WHITE, 40));
+        builder.setPiece(new Pawn(Color.WHITE, 49));
+        builder.setPiece(new Pawn(Color.WHITE, 53));
+        builder.setPiece(new Pawn(Color.WHITE, 54));
+        builder.setPiece(new Pawn(Color.WHITE, 46));
+        builder.setPiece(new Pawn(Color.WHITE, 44));
+        builder.setPiece(new Pawn(Color.WHITE, 35));
+        builder.setPiece(new Rook(Color.WHITE, 59));
+        builder.setPiece(new Knight(Color.WHITE, 36));
+        builder.setPiece(new Bishop(Color.WHITE, 50));
+        builder.setPiece(new Queen(Color.WHITE, 52));
+        builder.setPiece(new King(Color.WHITE, 58, false, false));
+        builder.setPiece(new Knight(Color.WHITE, 45));
+        builder.setPiece(new Rook(Color.WHITE, 63));
 
         //white to move
-        boardCreation.setMoveMaker(Color.WHITE);
+        builder.setMoveMaker(Color.WHITE);
         //build the board
-        return boardCreation.create();
+        return builder.build();
     }
 
     private static Board createStandardBoardImpl() {
-        final BoardCreation boardCreation = new BoardCreation();
+        final Builder builder = new Builder();
         // Black Layout
-        boardCreation.setPiece(new Rook(Color.BLACK, 0));
-        boardCreation.setPiece(new Knight(Color.BLACK, 1));
-        boardCreation.setPiece(new Bishop(Color.BLACK, 2));
-        boardCreation.setPiece(new Queen(Color.BLACK, 3));
-        boardCreation.setPiece(new King(Color.BLACK, 4, true, true));
-        boardCreation.setPiece(new Bishop(Color.BLACK, 5));
-        boardCreation.setPiece(new Knight(Color.BLACK, 6));
-        boardCreation.setPiece(new Rook(Color.BLACK, 7));
-        boardCreation.setPiece(new Pawn(Color.BLACK, 8));
-        boardCreation.setPiece(new Pawn(Color.BLACK, 9));
-        boardCreation.setPiece(new Pawn(Color.BLACK, 10));
-        boardCreation.setPiece(new Pawn(Color.BLACK, 11));
-        boardCreation.setPiece(new Pawn(Color.BLACK, 12));
-        boardCreation.setPiece(new Pawn(Color.BLACK, 13));
-        boardCreation.setPiece(new Pawn(Color.BLACK, 14));
-        boardCreation.setPiece(new Pawn(Color.BLACK, 15));
+        builder.setPiece(new Rook(Color.BLACK, 0));
+        builder.setPiece(new Knight(Color.BLACK, 1));
+        builder.setPiece(new Bishop(Color.BLACK, 2));
+        builder.setPiece(new Queen(Color.BLACK, 3));
+        builder.setPiece(new King(Color.BLACK, 4, true, true));
+        builder.setPiece(new Bishop(Color.BLACK, 5));
+        builder.setPiece(new Knight(Color.BLACK, 6));
+        builder.setPiece(new Rook(Color.BLACK, 7));
+        builder.setPiece(new Pawn(Color.BLACK, 8));
+        builder.setPiece(new Pawn(Color.BLACK, 9));
+        builder.setPiece(new Pawn(Color.BLACK, 10));
+        builder.setPiece(new Pawn(Color.BLACK, 11));
+        builder.setPiece(new Pawn(Color.BLACK, 12));
+        builder.setPiece(new Pawn(Color.BLACK, 13));
+        builder.setPiece(new Pawn(Color.BLACK, 14));
+        builder.setPiece(new Pawn(Color.BLACK, 15));
         // White Layout
-        boardCreation.setPiece(new Pawn(Color.WHITE, 48));
-        boardCreation.setPiece(new Pawn(Color.WHITE, 49));
-        boardCreation.setPiece(new Pawn(Color.WHITE, 50));
-        boardCreation.setPiece(new Pawn(Color.WHITE, 51));
-        boardCreation.setPiece(new Pawn(Color.WHITE, 52));
-        boardCreation.setPiece(new Pawn(Color.WHITE, 53));
-        boardCreation.setPiece(new Pawn(Color.WHITE, 54));
-        boardCreation.setPiece(new Pawn(Color.WHITE, 55));
-        boardCreation.setPiece(new Rook(Color.WHITE, 56));
-        boardCreation.setPiece(new Knight(Color.WHITE, 57));
-        boardCreation.setPiece(new Bishop(Color.WHITE, 58));
-        boardCreation.setPiece(new Queen(Color.WHITE, 59));
-        boardCreation.setPiece(new King(Color.WHITE, 60, true, true));
-        boardCreation.setPiece(new Bishop(Color.WHITE, 61));
-        boardCreation.setPiece(new Knight(Color.WHITE, 62));
-        boardCreation.setPiece(new Rook(Color.WHITE, 63));
+        builder.setPiece(new Pawn(Color.WHITE, 48));
+        builder.setPiece(new Pawn(Color.WHITE, 49));
+        builder.setPiece(new Pawn(Color.WHITE, 50));
+        builder.setPiece(new Pawn(Color.WHITE, 51));
+        builder.setPiece(new Pawn(Color.WHITE, 52));
+        builder.setPiece(new Pawn(Color.WHITE, 53));
+        builder.setPiece(new Pawn(Color.WHITE, 54));
+        builder.setPiece(new Pawn(Color.WHITE, 55));
+        builder.setPiece(new Rook(Color.WHITE, 56));
+        builder.setPiece(new Knight(Color.WHITE, 57));
+        builder.setPiece(new Bishop(Color.WHITE, 58));
+        builder.setPiece(new Queen(Color.WHITE, 59));
+        builder.setPiece(new King(Color.WHITE, 60, true, true));
+        builder.setPiece(new Bishop(Color.WHITE, 61));
+        builder.setPiece(new Knight(Color.WHITE, 62));
+        builder.setPiece(new Rook(Color.WHITE, 63));
         //white to move
-        boardCreation.setMoveMaker(Color.WHITE);
+        builder.setMoveMaker(Color.WHITE);
         //build the board
-        return boardCreation.create();
+        return builder.build();
     }
 
     private Collection<Move> calculateLegalMoves(final Collection<Piece> pieces) {
         return pieces.stream().flatMap(piece -> piece.calculateLegalMoves(this).stream())
                 .collect(Collectors.toList());
     }
-    private static Collection<Piece> calculateActivePieces(final BoardCreation boardCreation,
+    private static Collection<Piece> calculateActivePieces(final Builder builder,
                                                            final Color color) {
-        return boardCreation.boardConfig.values().stream()
+        return builder.boardConfig.values().stream()
                 .filter(piece -> piece.getPieceColor() == color)
                 .collect(Collectors.toList());
     }
 
-    public static class BoardCreation {
+    public static class Builder {
 
         Map<Integer, Piece> boardConfig;
         Color nextMoveMaker;
         Pawn enPassantPawn;
         Move transitionMove;
 
-        public BoardCreation() {
+        public Builder() {
             this.boardConfig = new HashMap<>(32, 1.0f);
         }
 
-        public BoardCreation setPiece(final Piece piece) {
+        public Builder setPiece(final Piece piece) {
             this.boardConfig.put(piece.getPiecePos(), piece);
             return this;
         }
 
-        public BoardCreation setMoveMaker(final Color nextMoveMaker) {
+        public Builder setMoveMaker(final Color nextMoveMaker) {
             this.nextMoveMaker = nextMoveMaker;
             return this;
         }
 
-        public BoardCreation setEnPassantPawn(final Pawn enPassantPawn) {
+        public Builder setEnPassantPawn(final Pawn enPassantPawn) {
             this.enPassantPawn = enPassantPawn;
             return this;
         }
 
-        public BoardCreation setMoveShift(final Move transitionMove) {
+        public Builder setMoveShift(final Move transitionMove) {
             this.transitionMove = transitionMove;
             return this;
         }
 
-        public Board create() {
+        public Board build() {
             return new Board(this);
         }
-
     }
 
     @Override

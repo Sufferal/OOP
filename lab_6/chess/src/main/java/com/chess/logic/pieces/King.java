@@ -3,9 +3,9 @@ package com.chess.logic.pieces;
 import com.chess.logic.Color;
 import com.chess.logic.board.Board;
 import com.chess.logic.board.BoardExtra;
-import com.chess.logic.board.Move;
-import com.chess.logic.board.Move.MajorAttackMove;
-import com.chess.logic.board.Move.MajorMove;
+import com.chess.logic.move.Move;
+import com.chess.logic.move.piece.MajorAttackMove;
+import com.chess.logic.move.piece.MajorMove;
 
 import java.util.ArrayList;
 import java.util.Collection;

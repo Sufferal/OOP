@@ -1,10 +1,9 @@
 package com.chess.logic.pieces;
 
 import com.chess.logic.Color;
-import com.chess.logic.board.Board;
-import com.chess.logic.board.BoardExtra;
-import com.chess.logic.board.Move;
-import com.chess.logic.board.Move.*;
+import com.chess.logic.board.*;
+import com.chess.logic.move.*;
+import com.chess.logic.move.pawn.*;
 
 import java.util.ArrayList;
 import java.util.Collection;

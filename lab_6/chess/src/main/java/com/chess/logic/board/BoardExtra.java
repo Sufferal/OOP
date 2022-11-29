@@ -1,11 +1,12 @@
 package com.chess.logic.board;
 
+import com.chess.logic.move.Move;
+import com.chess.logic.move.MoveCreation;
+import com.chess.logic.move.MoveShift;
 import com.chess.logic.pieces.King;
 import com.chess.logic.pieces.Piece;
 
 import java.util.*;
-
-import static com.chess.logic.board.Move.MoveCreation;
 
 public enum BoardExtra {
 

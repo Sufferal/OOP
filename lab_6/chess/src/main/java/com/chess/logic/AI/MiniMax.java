@@ -1,13 +1,11 @@
 package com.chess.logic.AI;
 
-import com.chess.logic.board.Board;
-import com.chess.logic.board.BoardExtra;
-import com.chess.logic.board.Move;
-import com.chess.logic.board.MoveShift;
+import com.chess.logic.board.*;
+import com.chess.logic.move.Move;
+import com.chess.logic.move.MoveCreation;
+import com.chess.logic.move.MoveShift;
 
 import java.util.concurrent.atomic.AtomicLong;
-
-import static com.chess.logic.board.Move.*;
 
 public final class MiniMax implements MoveCalculation {
 

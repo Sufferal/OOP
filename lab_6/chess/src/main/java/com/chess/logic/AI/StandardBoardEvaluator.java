@@ -1,7 +1,7 @@
 package com.chess.logic.AI;
 
 import com.chess.logic.board.Board;
-import com.chess.logic.board.Move;
+import com.chess.logic.move.Move;
 import com.chess.logic.pieces.Piece;
 import com.chess.logic.player.Player;
 import com.google.common.annotations.VisibleForTesting;

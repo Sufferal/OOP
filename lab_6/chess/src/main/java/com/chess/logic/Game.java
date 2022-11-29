@@ -1,11 +1,11 @@
 package com.chess.logic;
 
-import com.chess.logic.board.Board;
-import com.chess.logic.board.BoardExtra;
-import com.chess.logic.board.Move;
-import com.chess.logic.board.MoveShift;
+import com.chess.logic.board.*;
 import com.chess.logic.AI.MiniMax;
 import com.chess.logic.AI.MoveCalculation;
+import com.chess.logic.move.Move;
+import com.chess.logic.move.MoveCreation;
+import com.chess.logic.move.MoveShift;
 
 import java.util.Objects;
 import java.util.Scanner;
@@ -44,7 +44,7 @@ public class Game {
                     return;
                 }
                 final MoveShift move1 = board.currentPlayer()
-                        .makeMove(Move.MoveCreation.createMove(board, BoardExtra.INSTANCE.getCoordinateAtPos(startSquare),
+                        .makeMove(MoveCreation.createMove(board, BoardExtra.INSTANCE.getCoordinateAtPos(startSquare),
                                 BoardExtra.INSTANCE.getCoordinateAtPos(endSquare)));
                 Board tmpBoard = move1.getToBoard();
                 System.out.println(tmpBoard);
@@ -69,7 +69,7 @@ public class Game {
                     endSquare = endSquareScanner.nextLine();
                     MoveShift tmpMove = tmpBoard
                             .currentPlayer()
-                            .makeMove(Move.MoveCreation
+                            .makeMove(MoveCreation
                                     .createMove(tmpBoard, BoardExtra.INSTANCE.getCoordinateAtPos(startSquare),
                                             BoardExtra.INSTANCE.getCoordinateAtPos(endSquare)));
                     tmpBoard = tmpMove.getToBoard();
@@ -94,7 +94,7 @@ public class Game {
                     return;
                 }
                 final MoveShift move1 = board.currentPlayer()
-                        .makeMove(Move.MoveCreation.createMove(board, BoardExtra.INSTANCE.getCoordinateAtPos(startSquare),
+                        .makeMove(MoveCreation.createMove(board, BoardExtra.INSTANCE.getCoordinateAtPos(startSquare),
                                 BoardExtra.INSTANCE.getCoordinateAtPos(endSquare)));
                 Board tmpBoard = move1.getToBoard();
                 System.out.println(tmpBoard);
@@ -104,7 +104,7 @@ public class Game {
 
                 MoveShift tmpMove = tmpBoard
                         .currentPlayer()
-                        .makeMove(Move.MoveCreation
+                        .makeMove(MoveCreation
                                 .createMove(tmpBoard, bestMove.getCurrentCoordinate(), bestMove.getEndCoordinate()));
 
                 tmpBoard = tmpMove.getToBoard();
@@ -134,7 +134,7 @@ public class Game {
 
                         tmpMove = tmpBoard
                                 .currentPlayer()
-                                .makeMove(Move.MoveCreation
+                                .makeMove(MoveCreation
                                         .createMove(tmpBoard, BoardExtra.INSTANCE.getCoordinateAtPos(startSquare),
                                                 BoardExtra.INSTANCE.getCoordinateAtPos(endSquare)));
                         isHumanTurn = false;
@@ -143,7 +143,7 @@ public class Game {
 
                         tmpMove = tmpBoard
                                 .currentPlayer()
-                                .makeMove(Move.MoveCreation
+                                .makeMove(MoveCreation
                                         .createMove(tmpBoard,
                                                 bestMove.getCurrentCoordinate(),
                                                 bestMove.getEndCoordinate()));
@@ -171,7 +171,7 @@ public class Game {
                 Move bestMoveWhite = minMaxWhite.realize(tmpBoard);
                 MoveShift tmpMoveWhite = tmpBoard
                         .currentPlayer()
-                        .makeMove(Move.MoveCreation
+                        .makeMove(MoveCreation
                                 .createMove(tmpBoard, bestMoveWhite.getCurrentCoordinate(),
                                         bestMoveWhite.getEndCoordinate()));
                 tmpBoard = tmpMoveWhite.getToBoard();
@@ -182,7 +182,7 @@ public class Game {
                 Move bestMoveBlack = minMaxBlack.realize(tmpBoard);
                 MoveShift tmpMoveBlack = tmpBoard
                         .currentPlayer()
-                        .makeMove(Move.MoveCreation
+                        .makeMove(MoveCreation
                                 .createMove(tmpBoard, bestMoveBlack.getCurrentCoordinate(), bestMoveBlack.getEndCoordinate()));
                 tmpBoard = tmpMoveBlack.getToBoard();
                 System.out.println(tmpBoard);
@@ -207,7 +207,7 @@ public class Game {
                         bestMoveWhite = minMaxWhite.realize(tmpBoard);
                         tmpMoveWhite = tmpBoard
                                 .currentPlayer()
-                                .makeMove(Move.MoveCreation
+                                .makeMove(MoveCreation
                                         .createMove(tmpBoard, bestMoveWhite.getCurrentCoordinate(),
                                                 bestMoveWhite.getEndCoordinate()));
                         tmpBoard = tmpMoveWhite.getToBoard();
@@ -216,7 +216,7 @@ public class Game {
                         bestMoveBlack = minMaxBlack.realize(tmpBoard);
                         tmpMoveBlack = tmpBoard
                                 .currentPlayer()
-                                .makeMove(Move.MoveCreation
+                                .makeMove(MoveCreation
                                         .createMove(tmpBoard, bestMoveBlack.getCurrentCoordinate(),
                                                 bestMoveBlack.getEndCoordinate()));
                         tmpBoard = tmpMoveBlack.getToBoard();

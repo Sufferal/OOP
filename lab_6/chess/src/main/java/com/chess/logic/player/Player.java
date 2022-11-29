@@ -2,9 +2,9 @@ package com.chess.logic.player;
 
 import com.chess.logic.Color;
 import com.chess.logic.board.Board;
-import com.chess.logic.board.Move;
-import com.chess.logic.board.Move.MoveStatus;
-import com.chess.logic.board.MoveShift;
+import com.chess.logic.move.Move;
+import com.chess.logic.move.MoveStatus;
+import com.chess.logic.move.MoveShift;
 import com.chess.logic.pieces.King;
 import com.chess.logic.pieces.Piece;
 

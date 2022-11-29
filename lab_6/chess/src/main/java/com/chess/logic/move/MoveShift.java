@@ -1,6 +1,6 @@
-package com.chess.logic.board;
+package com.chess.logic.move;
 
-import com.chess.logic.board.Move.MoveStatus;
+import com.chess.logic.board.Board;
 
 public final class MoveShift {
 

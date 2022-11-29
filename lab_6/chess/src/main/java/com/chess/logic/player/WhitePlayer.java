@@ -3,9 +3,9 @@ package com.chess.logic.player;
 import com.chess.logic.Color;
 import com.chess.logic.board.Board;
 import com.chess.logic.board.BoardExtra;
-import com.chess.logic.board.Move;
-import com.chess.logic.board.Move.KingSideCastleMove;
-import com.chess.logic.board.Move.QueenSideCastleMove;
+import com.chess.logic.move.Move;
+import com.chess.logic.move.castle.KingSideCastleMove;
+import com.chess.logic.move.castle.QueenSideCastleMove;
 import com.chess.logic.pieces.Piece;
 import com.chess.logic.pieces.Rook;
 
