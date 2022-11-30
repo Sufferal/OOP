@@ -8,7 +8,8 @@ public class ChessMain {
         ChessView view = new ChessView();
         ChessController controller = new ChessController(model, view);
 
-//        controller.getMatchChoice();
+        controller.enterMatchChoice();
+        controller.initModel();
         controller.setBoard(Board.createStandardBoard());
 
         while (!controller.isGameDone()) {
