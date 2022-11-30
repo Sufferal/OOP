@@ -27,7 +27,6 @@ public class Game {
         Scanner matchChoiceScanner = new Scanner(System.in);
         System.out.print("Match choice: ");
         int matchChoice;
-
         matchChoice = matchChoiceScanner.nextInt();
 
         switch (matchChoice) {
